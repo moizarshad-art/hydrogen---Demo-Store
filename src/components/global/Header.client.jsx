@@ -157,7 +157,7 @@ function DesktopHeader({countryCode, isHome, menu, openCart, title}) {
               >
                 {item.title}
               </Link>
-              {item?.items.length > 0 && (
+              {item?.items?.length > 0 && (
                 <div className="sub-items flex flex-col hidden bg-white text-black w-max py-[20px] group-hover:flex group-hover:absolute group-hover:top-[30px]">
                   {(item?.items || []).map((item) => (
                     <Link
@@ -198,7 +198,11 @@ function DesktopHeader({countryCode, isHome, menu, openCart, title}) {
         <Link to={'/account'} className={styles.button}>
           <IconAccount />
         </Link>
-        <button onClick={openCart} className={styles.button}>
+        <button
+          onClick={openCart}
+          className={styles.button}
+          data-drawer-action="open"
+        >
           <IconBag />
           <CartBadge dark={isHome} />
         </button>
