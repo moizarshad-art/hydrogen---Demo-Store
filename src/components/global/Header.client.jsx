@@ -124,7 +124,9 @@ function MobileHeader({countryCode, title, isHome, openCart, openMenu}) {
 
 function DesktopHeader({countryCode, isHome, menu, openCart, title}) {
   const {y} = useWindowScroll();
-
+  const filterMenu = menu.items.filter(function (currentValue) {
+    return !currentValue.title.includes('<span');
+  });
   const styles = {
     button:
       'relative flex items-center justify-center w-8 h-8 focus:ring-primary/5',
@@ -145,10 +147,31 @@ function DesktopHeader({countryCode, isHome, menu, openCart, title}) {
         </Link>
         <nav className="flex gap-8">
           {/* Top level menu items */}
-          {(menu?.items || []).map((item) => (
-            <Link key={item.id} to={item.to} target={item.target}>
-              {item.title}
-            </Link>
+          {(filterMenu || []).map((item) => (
+            <div className="top-menu group relative" key={item.id}>
+              <Link
+                key={item.id}
+                to={item.to}
+                target={item.target}
+                className={item?.items.length > 0 ? 'pb-4' : null}
+              >
+                {item.title}
+              </Link>
+              {item?.items.length > 0 && (
+                <div className="sub-items flex flex-col hidden bg-white text-black w-max py-[20px] group-hover:flex group-hover:absolute group-hover:top-[30px]">
+                  {(item?.items || []).map((item) => (
+                    <Link
+                      className="pb-4 px-[20px]"
+                      key={item.id}
+                      to={item.to}
+                      target={item.target}
+                    >
+                      {item.title}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
         </nav>
       </div>
